@@ -2,6 +2,8 @@ from flask import Flask, render_template, request, flash
 import os
 from werkzeug.utils import secure_filename
 
+from app.pdf_utils import extract_text
+
 app = Flask(__name__)
 
 app.secret_key = "resume_analyzer_secret"
@@ -17,7 +19,8 @@ def allowed_file(filename):
 
     return (
         "." in filename
-        and filename.rsplit(".", 1)[1].lower() in ALLOWED_EXTENSIONS
+        and filename.rsplit(".", 1)[1].lower()
+        in ALLOWED_EXTENSIONS
     )
 
 
@@ -30,40 +33,59 @@ def home():
 @app.route("/upload", methods=["GET", "POST"])
 def upload():
 
+    extracted_text = ""
+
     if request.method == "POST":
 
         if "resume" not in request.files:
 
             flash("No file selected.", "danger")
 
-            return render_template("upload.html")
+            return render_template(
+                "upload.html",
+                extracted_text=extracted_text
+            )
 
         file = request.files["resume"]
 
         if file.filename == "":
 
-            flash("Please choose a PDF file.", "warning")
+            flash("Please choose a PDF.", "warning")
 
-            return render_template("upload.html")
+            return render_template(
+                "upload.html",
+                extracted_text=extracted_text
+            )
 
         if file and allowed_file(file.filename):
 
             filename = secure_filename(file.filename)
 
-            file.save(
-                os.path.join(
-                    app.config["UPLOAD_FOLDER"],
-                    filename
-                )
+            filepath = os.path.join(
+                app.config["UPLOAD_FOLDER"],
+                filename
             )
 
-            flash("Resume uploaded successfully!", "success")
+            file.save(filepath)
+
+            extracted_text = extract_text(filepath)
+
+            flash(
+                "Resume uploaded successfully!",
+                "success"
+            )
 
         else:
 
-            flash("Only PDF files are allowed.", "danger")
+            flash(
+                "Only PDF files are allowed.",
+                "danger"
+            )
 
-    return render_template("upload.html")
+    return render_template(
+        "upload.html",
+        extracted_text=extracted_text
+    )
 
 
 @app.route("/about")

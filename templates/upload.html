@@ -4,36 +4,59 @@
 
 <h2 class="mb-4">
 
-    Upload Resume
+Upload Resume
 
 </h2>
 
-<form method="POST" enctype="multipart/form-data">
+<form
+method="POST"
+enctype="multipart/form-data">
 
-    <div class="mb-3">
+<div class="mb-3">
 
-        <label class="form-label">
+<label class="form-label">
 
-            Select Resume (PDF)
+Select Resume
 
-        </label>
+</label>
 
-        <input
-            type="file"
-            name="resume"
-            class="form-control"
-            accept=".pdf"
-        >
+<input
+type="file"
+name="resume"
+class="form-control"
+accept=".pdf">
 
-    </div>
+</div>
 
-    <button
-        class="btn btn-primary">
+<button
+class="btn btn-primary">
 
-        Upload
+Upload
 
-    </button>
+</button>
 
 </form>
+
+{% if extracted_text %}
+
+<hr>
+
+<h3>
+
+Extracted Text
+
+</h3>
+
+<div
+class="border rounded p-3 bg-light"
+style="white-space: pre-wrap;
+max-height:500px;
+overflow:auto;">
+
+{{ extracted_text }}
+
+</div>
+
+{% endif %}
 
 {% endblock %}
