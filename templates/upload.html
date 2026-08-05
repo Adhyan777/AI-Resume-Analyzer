@@ -63,6 +63,32 @@ Upload
 
 <p><strong>🔤 Character Count:</strong> {{ resume_summary.characters }}</p>
 
+<hr>
+
+<h5>💻 Skills Detected</h5>
+
+{% if resume_summary.skills %}
+
+<ul class="list-group">
+
+    {% for skill in resume_summary.skills %}
+
+    <li class="list-group-item">
+
+        ✅ {{ skill }}
+
+    </li>
+
+    {% endfor %}
+
+</ul>
+
+{% else %}
+
+<p>No skills detected.</p>
+
+{% endif %}
+
 </div>
 
 </div>

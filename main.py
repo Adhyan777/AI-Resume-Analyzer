@@ -10,6 +10,7 @@ from app.parser import (
     word_count,
     character_count
 )
+from app.skills import detect_skills
 
 app = Flask(__name__)
 
@@ -79,12 +80,13 @@ def upload():
             extracted_text = extract_text(filepath)
 
             resume_summary = {
-                "name": extract_name(extracted_text),
-                "email": extract_email(extracted_text),
-                "phone": extract_phone(extracted_text),
-                "words": word_count(extracted_text),
-                "characters": character_count(extracted_text)
-            }
+            "name": extract_name(extracted_text),
+            "email": extract_email(extracted_text),
+            "phone": extract_phone(extracted_text),
+            "words": word_count(extracted_text),
+            "characters": character_count(extracted_text),
+            "skills": detect_skills(extracted_text)
+        }
 
             flash(
                 "Resume uploaded successfully!",
