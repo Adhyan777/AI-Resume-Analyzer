@@ -39,6 +39,36 @@ Upload
 
 {% if extracted_text %}
 
+{% if resume_summary %}
+
+<hr>
+
+<h3 class="mb-3">
+
+📄 Resume Summary
+
+</h3>
+
+<div class="card mb-4">
+
+<div class="card-body">
+
+<p><strong>👤 Name:</strong> {{ resume_summary.name }}</p>
+
+<p><strong>📧 Email:</strong> {{ resume_summary.email }}</p>
+
+<p><strong>📱 Phone:</strong> {{ resume_summary.phone }}</p>
+
+<p><strong>📝 Word Count:</strong> {{ resume_summary.words }}</p>
+
+<p><strong>🔤 Character Count:</strong> {{ resume_summary.characters }}</p>
+
+</div>
+
+</div>
+
+{% endif %}
+
 <hr>
 
 <h3>

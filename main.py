@@ -3,6 +3,13 @@ import os
 from werkzeug.utils import secure_filename
 
 from app.pdf_utils import extract_text
+from app.parser import (
+    extract_name,
+    extract_email,
+    extract_phone,
+    word_count,
+    character_count
+)
 
 app = Flask(__name__)
 
@@ -34,6 +41,7 @@ def home():
 def upload():
 
     extracted_text = ""
+    resume_summary = None
 
     if request.method == "POST":
 
@@ -70,6 +78,14 @@ def upload():
 
             extracted_text = extract_text(filepath)
 
+            resume_summary = {
+                "name": extract_name(extracted_text),
+                "email": extract_email(extracted_text),
+                "phone": extract_phone(extracted_text),
+                "words": word_count(extracted_text),
+                "characters": character_count(extracted_text)
+            }
+
             flash(
                 "Resume uploaded successfully!",
                 "success"
@@ -82,10 +98,12 @@ def upload():
                 "danger"
             )
 
-    return render_template(
+        return render_template(
         "upload.html",
-        extracted_text=extracted_text
+        extracted_text=extracted_text,
+        resume_summary=resume_summary
     )
+    
 
 
 @app.route("/about")
