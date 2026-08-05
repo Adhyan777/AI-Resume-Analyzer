@@ -39,6 +39,67 @@ Upload
 
 {% if extracted_text %}
 
+{% if ats_result %}
+
+<hr>
+
+<div class="card mb-4">
+
+    <div class="card-body">
+
+        <h3>📊 ATS Resume Score</h3>
+
+        <h1 class="display-5">
+
+            {{ ats_result.score }}/100
+
+        </h1>
+
+        <div class="progress mb-3" style="height:30px;">
+
+            <div
+                class="progress-bar bg-success"
+                role="progressbar"
+                style="width: {{ ats_result.score }}%;">
+
+                {{ ats_result.score }}%
+
+            </div>
+
+        </div>
+
+        <hr>
+
+        <h5>✅ Strengths</h5>
+
+        <ul>
+
+        {% for item in ats_result.strengths %}
+
+            <li>{{ item }}</li>
+
+        {% endfor %}
+
+        </ul>
+
+        <h5>⚠ Suggestions</h5>
+
+        <ul>
+
+        {% for item in ats_result.improvements %}
+
+            <li>{{ item }}</li>
+
+        {% endfor %}
+
+        </ul>
+
+    </div>
+
+</div>
+
+{% endif %}
+
 {% if resume_summary %}
 
 <hr>

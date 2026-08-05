@@ -11,6 +11,7 @@ from app.parser import (
     character_count
 )
 from app.skills import detect_skills
+from app.ats import calculate_ats_score
 
 app = Flask(__name__)
 
@@ -87,6 +88,10 @@ def upload():
             "characters": character_count(extracted_text),
             "skills": detect_skills(extracted_text)
         }
+            ats_result = calculate_ats_score(
+            resume_summary,
+            extracted_text
+     )
 
             flash(
                 "Resume uploaded successfully!",
@@ -101,10 +106,11 @@ def upload():
             )
 
         return render_template(
-        "upload.html",
-        extracted_text=extracted_text,
-        resume_summary=resume_summary
-    )
+    "upload.html",
+    extracted_text=extracted_text,
+    resume_summary=resume_summary,
+    ats_result=ats_result
+)
     
 
 
