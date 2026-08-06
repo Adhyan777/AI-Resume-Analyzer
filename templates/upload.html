@@ -2,97 +2,142 @@
 
 {% block content %}
 
-<h2 class="mb-4">
+<div class="card mb-5">
 
-Upload Resume
+    <div class="card-body p-4">
 
-</h2>
+        <h2 class="card-title text-center mb-3">
+            📄 Upload Resume
+        </h2>
 
-<form
-method="POST"
-enctype="multipart/form-data">
+        <p class="text-center text-muted mb-4">
+            Upload your resume in PDF format and get an instant ATS analysis.
+        </p>
 
-<div class="mb-3">
+        <form method="POST" enctype="multipart/form-data">
 
-<label class="form-label">
+            <div class="mb-4">
 
-Select Resume
+                <label class="form-label fw-bold">
 
-</label>
+                    Choose Resume (PDF)
 
-<input
-type="file"
-name="resume"
-class="form-control"
-accept=".pdf">
+                </label>
+
+                <input
+                    type="file"
+                    name="resume"
+                    class="form-control form-control-lg"
+                    accept=".pdf"
+                    required>
+
+            </div>
+
+            <div class="d-grid">
+
+                <button
+                    type="submit"
+                    class="btn btn-primary btn-lg">
+
+                    ⬆ Upload Resume
+
+                </button>
+
+            </div>
+
+        </form>
+
+    </div>
 
 </div>
 
-<button
-class="btn btn-primary">
-
-Upload
-
-</button>
-
-</form>
-
 {% if extracted_text %}
 
-{% if ats_result %}
+    <!-- Resume Summary -->
 
-<hr>
+{% if resume_summary %}
 
-<div class="card mb-4">
+<div class="row g-4 mb-4">
 
-    <div class="card-body">
+    <!-- Resume Summary -->
 
-        <h3>📊 ATS Resume Score</h3>
+    <div class="col-lg-8">
 
-        <h1 class="display-5">
+        <div class="card dashboard-card">
 
-            {{ ats_result.score }}/100
+            <div class="card-body">
 
-        </h1>
+                <h3 class="card-title mb-4">
+                    📄 Resume Summary
+                </h3>
 
-        <div class="progress mb-3" style="height:30px;">
+                <div class="summary-item">
+                    👤 <strong>Name</strong><br>
+                    {{ resume_summary.name }}
+                </div>
 
-            <div
-                class="progress-bar bg-success"
-                role="progressbar"
-                style="width: {{ ats_result.score }}%;">
+                <div class="summary-item">
+                    📧 <strong>Email</strong><br>
+                    {{ resume_summary.email }}
+                </div>
 
-                {{ ats_result.score }}%
+                <div class="summary-item">
+                    📱 <strong>Phone</strong><br>
+                    {{ resume_summary.phone }}
+                </div>
+
+                <div class="summary-item">
+                    📝 <strong>Word Count</strong><br>
+                    {{ resume_summary.words }}
+                </div>
+
+                <div class="summary-item">
+                    🔤 <strong>Character Count</strong><br>
+                    {{ resume_summary.characters }}
+                </div>
 
             </div>
 
         </div>
 
-        <hr>
+    </div>
 
-        <h5>✅ Strengths</h5>
+    <!-- ATS Score Placeholder -->
 
-        <ul>
+    <div class="col-lg-4">
 
-        {% for item in ats_result.strengths %}
+        <div class="card dashboard-card">
 
-            <li>{{ item }}</li>
+            <div class="card-body text-center">
 
-        {% endfor %}
+                <h3 class="card-title mb-4">
+    📊 ATS Score
+</h3>
 
-        </ul>
+<div class="score-number {{ score_class }}">
+    {{ ats_result.score }}/100
+</div>
 
-        <h5>⚠ Suggestions</h5>
+<p class="score-label mb-3">
+    Overall Resume Score
+</p>
 
-        <ul>
+<div class="progress" style="height:25px;">
 
-        {% for item in ats_result.improvements %}
+    <div
+        class="progress-bar {{ 'bg-success' if ats_result.score >= 80 else 'bg-warning' if ats_result.score >= 50 else 'bg-danger' }}"
+        role="progressbar"
+        style="width: {{ ats_result.score }}%;">
 
-            <li>{{ item }}</li>
+        {{ ats_result.score }}%
 
-        {% endfor %}
+    </div>
 
-        </ul>
+</div>
+
+            </div>
+
+        </div>
 
     </div>
 
@@ -100,77 +145,103 @@ Upload
 
 {% endif %}
 
+    <!-- ATS Score -->
+
+    {% set score_class = "score-poor" %}
+
+{% if ats_result.score >= 80 %}
+    {% set score_class = "score-excellent" %}
+{% elif ats_result.score >= 50 %}
+    {% set score_class = "score-good" %}
+{% endif %}
+
+    {% if ats_result %}
+
+    
+
+            <hr>
+
+            <h5>✅ Strengths</h5>
+
+            <ul>
+
+                {% for item in ats_result.strengths %}
+
+                <li>{{ item }}</li>
+
+                {% endfor %}
+
+            </ul>
+
+            <h5>⚠ Suggestions</h5>
+
+            <ul>
+
+                {% for item in ats_result.improvements %}
+
+                <li>{{ item }}</li>
+
+                {% endfor %}
+
+            </ul>
+
+        </div>
+
+    </div>
+
+    {% endif %}
+
+    <!-- Extracted Text -->
+
+    <hr>
+
+    <h3>
+        📄 Extracted Text
+    </h3>
+
+    <div
+        class="border rounded p-3 bg-light"
+        style="white-space: pre-wrap; max-height:500px; overflow:auto;">
+
+        {{ extracted_text }}
+
+    </div>
+
+{% endif %}
+
 {% if resume_summary %}
-
-<hr>
-
-<h3 class="mb-3">
-
-📄 Resume Summary
-
-</h3>
 
 <div class="card mb-4">
 
-<div class="card-body">
+    <div class="card-body">
 
-<p><strong>👤 Name:</strong> {{ resume_summary.name }}</p>
+        <h3 class="card-title mb-4">
+            💻 Skills Detected
+        </h3>
 
-<p><strong>📧 Email:</strong> {{ resume_summary.email }}</p>
+        {% if resume_summary.skills %}
 
-<p><strong>📱 Phone:</strong> {{ resume_summary.phone }}</p>
+            {% for skill in resume_summary.skills %}
 
-<p><strong>📝 Word Count:</strong> {{ resume_summary.words }}</p>
+                <span class="skill-badge">
 
-<p><strong>🔤 Character Count:</strong> {{ resume_summary.characters }}</p>
+                    {{ skill }}
 
-<hr>
+                </span>
 
-<h5>💻 Skills Detected</h5>
+            {% endfor %}
 
-{% if resume_summary.skills %}
+        {% else %}
 
-<ul class="list-group">
+            <p class="text-muted">
 
-    {% for skill in resume_summary.skills %}
+                No skills detected.
 
-    <li class="list-group-item">
+            </p>
 
-        ✅ {{ skill }}
+        {% endif %}
 
-    </li>
-
-    {% endfor %}
-
-</ul>
-
-{% else %}
-
-<p>No skills detected.</p>
-
-{% endif %}
-
-</div>
-
-</div>
-
-{% endif %}
-
-<hr>
-
-<h3>
-
-Extracted Text
-
-</h3>
-
-<div
-class="border rounded p-3 bg-light"
-style="white-space: pre-wrap;
-max-height:500px;
-overflow:auto;">
-
-{{ extracted_text }}
+    </div>
 
 </div>
 

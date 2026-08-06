@@ -1,0 +1,111 @@
+body{
+    background:#f4f7fb;
+}
+
+.card{
+    border:none;
+    border-radius:18px;
+    box-shadow:0 8px 20px rgba(0,0,0,.08);
+}
+
+.card-title{
+    font-weight:700;
+}
+
+.summary-item{
+    font-size:17px;
+    margin-bottom:12px;
+}
+
+.badge-skill{
+    background:#0d6efd;
+    color:white;
+    border-radius:25px;
+    padding:8px 15px;
+    display:inline-block;
+    margin:5px;
+    font-size:15px;
+}
+
+.progress{
+    border-radius:20px;
+}
+
+.display-score{
+    font-size:50px;
+    font-weight:bold;
+}
+
+.section-title{
+    font-weight:700;
+}
+
+.resume-text{
+    background:white;
+    border-radius:15px;
+    padding:20px;
+    max-height:500px;
+    overflow:auto;
+    white-space:pre-wrap;
+}
+
+.card:hover{
+    transform:translateY(-3px);
+    transition:.25s;
+}
+
+.dashboard-card{
+    height:100%;
+}
+
+.score-number{
+    font-size:3.2rem;
+    font-weight:700;
+}
+
+.score-label{
+    color:#6c757d;
+    font-size:1rem;
+}
+
+.score-excellent{
+    color:#198754;
+}
+
+.score-good{
+    color:#ffc107;
+}
+
+.score-poor{
+    color:#dc3545;
+}
+
+/* Skills */
+
+.skill-badge{
+
+    display:inline-block;
+
+    background:#0d6efd;
+
+    color:white;
+
+    padding:8px 16px;
+
+    border-radius:30px;
+
+    margin:6px;
+
+    font-size:15px;
+
+    font-weight:500;
+
+}
+
+.skill-badge:hover{
+
+    background:#084298;
+
+    transition:.25s;
+
+}

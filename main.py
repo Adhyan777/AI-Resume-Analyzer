@@ -44,6 +44,7 @@ def upload():
 
     extracted_text = ""
     resume_summary = None
+    ats_result = None
 
     if request.method == "POST":
 
@@ -53,7 +54,9 @@ def upload():
 
             return render_template(
                 "upload.html",
-                extracted_text=extracted_text
+                extracted_text=extracted_text,
+                resume_summary=resume_summary,
+                ats_result=ats_result
             )
 
         file = request.files["resume"]
@@ -64,7 +67,9 @@ def upload():
 
             return render_template(
                 "upload.html",
-                extracted_text=extracted_text
+                extracted_text=extracted_text,
+                resume_summary=resume_summary,
+                ats_result=ats_result
             )
 
         if file and allowed_file(file.filename):
@@ -81,17 +86,18 @@ def upload():
             extracted_text = extract_text(filepath)
 
             resume_summary = {
-            "name": extract_name(extracted_text),
-            "email": extract_email(extracted_text),
-            "phone": extract_phone(extracted_text),
-            "words": word_count(extracted_text),
-            "characters": character_count(extracted_text),
-            "skills": detect_skills(extracted_text)
-        }
+                "name": extract_name(extracted_text),
+                "email": extract_email(extracted_text),
+                "phone": extract_phone(extracted_text),
+                "words": word_count(extracted_text),
+                "characters": character_count(extracted_text),
+                "skills": detect_skills(extracted_text)
+            }
+
             ats_result = calculate_ats_score(
-            resume_summary,
-            extracted_text
-     )
+                resume_summary,
+                extracted_text
+            )
 
             flash(
                 "Resume uploaded successfully!",
@@ -105,14 +111,12 @@ def upload():
                 "danger"
             )
 
-        return render_template(
-    "upload.html",
-    extracted_text=extracted_text,
-    resume_summary=resume_summary,
-    ats_result=ats_result
-)
-    
-
+    return render_template(
+        "upload.html",
+        extracted_text=extracted_text,
+        resume_summary=resume_summary,
+        ats_result=ats_result
+    )
 
 @app.route("/about")
 def about():
