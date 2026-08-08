@@ -281,6 +281,30 @@
 
 {% endif %}
 
+{% if ai_analysis %}
+
+<div class="card mb-4">
+
+    <div class="card-body">
+
+        <h3 class="card-title mb-4">
+            🤖 AI Resume Analysis
+        </h3>
+
+        <div
+            class="border rounded p-3 bg-light"
+            style="white-space: pre-wrap;">
+
+            {{ ai_analysis }}
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endif %}
+
     <!-- Extracted Text -->
 
 <hr>

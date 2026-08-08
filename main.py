@@ -12,6 +12,7 @@ from app.parser import (
 )
 from app.skills import detect_skills
 from app.ats import calculate_ats_score
+from app.ai_analyzer import analyze_resume
 
 app = Flask(__name__)
 
@@ -84,6 +85,8 @@ def upload():
             file.save(filepath)
 
             extracted_text = extract_text(filepath)
+            ai_analysis = analyze_resume(extracted_text)
+
 
             resume_summary = {
                 "name": extract_name(extracted_text),
@@ -112,11 +115,12 @@ def upload():
             )
 
     return render_template(
-        "upload.html",
-        extracted_text=extracted_text,
-        resume_summary=resume_summary,
-        ats_result=ats_result
-    )
+    "upload.html",
+    extracted_text=extracted_text,
+    resume_summary=resume_summary,
+    ats_result=ats_result,
+    ai_analysis=ai_analysis
+)
 
 @app.route("/about")
 def about():
