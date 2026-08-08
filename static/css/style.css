@@ -199,3 +199,15 @@ body{
     font-size: 3.5rem;
     font-weight: 800;
 }
+
+.skill-match {
+    background-color: #d1fae5;
+    color: #065f46;
+    border: 1px solid #a7f3d0;
+}
+
+.skill-missing {
+    background-color: #fee2e2;
+    color: #991b1b;
+    border: 1px solid #fecaca;
+}

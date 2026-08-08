@@ -414,31 +414,55 @@
         </h3>
 
         <div class="mb-4">
-            <h5>📊 Match Score</h5>
 
-            <h2>
+    <h5>📊 Match Score</h5>
+
+    <div class="d-flex align-items-center gap-3">
+
+        <h2 class="mb-0">
+            {{ job_match.match_score }}%
+        </h2>
+
+        <div class="progress flex-grow-1" style="height: 20px;">
+
+            <div
+                class="progress-bar"
+                role="progressbar"
+                style="width: {{ job_match.match_score }}%;"
+                aria-valuenow="{{ job_match.match_score }}"
+                aria-valuemin="0"
+                aria-valuemax="100">
+
                 {{ job_match.match_score }}%
-            </h2>
+
+            </div>
+
         </div>
+
+    </div>
+
+</div>
 
         <div class="mb-4">
             <h5>✅ Matching Skills</h5>
 
             {% for skill in job_match.matching_skills %}
-                <span class="skill-badge">
-                    {{ skill }}
-                </span>
-            {% endfor %}
+    <span class="skill-badge skill-match">
+        {{ skill }}
+    </span>
+{% endfor %}
+
         </div>
 
         <div class="mb-4">
             <h5>⚠️ Missing Skills</h5>
 
             {% for skill in job_match.missing_skills %}
-                <span class="skill-badge">
-                    {{ skill }}
-                </span>
-            {% endfor %}
+    <span class="skill-badge skill-missing">
+        {{ skill }}
+    </span>
+{% endfor %}
+
         </div>
 
         <div class="mb-4">
