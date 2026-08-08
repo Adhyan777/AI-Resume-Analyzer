@@ -157,58 +157,6 @@
 
     {% if ats_result %}
 
-    
-
-            <hr>
-
-            <h5>✅ Strengths</h5>
-
-            <ul>
-
-                {% for item in ats_result.strengths %}
-
-                <li>{{ item }}</li>
-
-                {% endfor %}
-
-            </ul>
-
-            <h5>⚠ Suggestions</h5>
-
-            <ul>
-
-                {% for item in ats_result.improvements %}
-
-                <li>{{ item }}</li>
-
-                {% endfor %}
-
-            </ul>
-
-        </div>
-
-    </div>
-
-    {% endif %}
-
-    <!-- Extracted Text -->
-
-    <hr>
-
-    <h3>
-        📄 Extracted Text
-    </h3>
-
-    <div
-        class="border rounded p-3 bg-light"
-        style="white-space: pre-wrap; max-height:500px; overflow:auto;">
-
-        {{ extracted_text }}
-
-    </div>
-
-{% endif %}
-
 {% if resume_summary %}
 
 <div class="card mb-4">
@@ -224,9 +172,7 @@
             {% for skill in resume_summary.skills %}
 
                 <span class="skill-badge">
-
                     {{ skill }}
-
                 </span>
 
             {% endfor %}
@@ -234,12 +180,146 @@
         {% else %}
 
             <p class="text-muted">
-
                 No skills detected.
-
             </p>
 
         {% endif %}
+
+    </div>
+
+</div>
+
+{% endif %}    
+
+<div class="card mb-4">
+
+    <div class="card-body">
+
+        <h3 class="card-title mb-4">
+            📋 Resume Feedback
+        </h3>
+
+        <div class="row g-4">
+
+            <!-- Strengths -->
+
+            <div class="col-md-6">
+
+                <div class="feedback-section">
+
+                    <h5 class="text-success mb-3">
+                        ✅ Strengths
+                    </h5>
+
+                    {% if ats_result.strengths %}
+
+                        <ul class="list-group">
+
+                            {% for item in ats_result.strengths %}
+
+                                <li class="list-group-item">
+                                    ✅ {{ item }}
+                                </li>
+
+                            {% endfor %}
+
+                        </ul>
+
+                    {% else %}
+
+                        <p class="text-muted">
+                            No strengths identified.
+                        </p>
+
+                    {% endif %}
+
+                </div>
+
+            </div>
+
+            <!-- Suggestions -->
+
+            <div class="col-md-6">
+
+                <div class="feedback-section">
+
+                    <h5 class="text-warning mb-3">
+                        ⚠ Suggestions
+                    </h5>
+
+                    {% if ats_result.improvements %}
+
+                        <ul class="list-group">
+
+                            {% for item in ats_result.improvements %}
+
+                                <li class="list-group-item">
+                                    💡 {{ item }}
+                                </li>
+
+                            {% endfor %}
+
+                        </ul>
+
+                    {% else %}
+
+                        <p class="text-muted">
+                            No suggestions available.
+                        </p>
+
+                    {% endif %}
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endif %}
+
+    <!-- Extracted Text -->
+
+<hr>
+
+<div class="card mb-4">
+
+    <div class="card-body">
+
+        <h3 class="card-title mb-3">
+            📄 Extracted Resume Text
+        </h3>
+
+        <button
+            class="btn btn-outline-primary mb-3"
+            type="button"
+            data-bs-toggle="collapse"
+            data-bs-target="#extractedResumeText"
+            aria-expanded="false"
+            aria-controls="extractedResumeText">
+
+            ▼ Show Extracted Text
+
+        </button>
+
+        <div
+            class="collapse"
+            id="extractedResumeText">
+
+            <div
+                class="border rounded p-3 bg-light"
+                style="white-space: pre-wrap;
+                       max-height:500px;
+                       overflow:auto;">
+
+                {{ extracted_text }}
+
+            </div>
+
+        </div>
 
     </div>
 
