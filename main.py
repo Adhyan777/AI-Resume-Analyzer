@@ -12,7 +12,7 @@ from app.parser import (
 )
 from app.skills import detect_skills
 from app.ats import calculate_ats_score
-from app.ai_analyzer import analyze_resume
+from app.ai_analyzer import analyze_resume, analyze_job_match
 
 app = Flask(__name__)
 
@@ -46,8 +46,12 @@ def upload():
     extracted_text = ""
     resume_summary = None
     ats_result = None
+    ai_analysis = None
+    job_match = None
 
     if request.method == "POST":
+
+        job_description = request.form.get("job_description", "")
 
         if "resume" not in request.files:
 
@@ -87,6 +91,15 @@ def upload():
             extracted_text = extract_text(filepath)
             ai_analysis = analyze_resume(extracted_text)
 
+            job_match = None
+
+
+        if job_description.strip():
+
+            job_match = analyze_job_match(
+            extracted_text,
+            job_description
+     )
 
             resume_summary = {
                 "name": extract_name(extracted_text),
@@ -119,7 +132,8 @@ def upload():
     extracted_text=extracted_text,
     resume_summary=resume_summary,
     ats_result=ats_result,
-    ai_analysis=ai_analysis
+    ai_analysis=ai_analysis,
+    job_match=job_match
 )
 
 @app.route("/about")

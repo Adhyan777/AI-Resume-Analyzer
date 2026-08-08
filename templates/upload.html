@@ -33,6 +33,20 @@
 
             </div>
 
+            <div class="mb-3">
+
+    <label class="form-label">
+        💼 Job Description
+    </label>
+
+    <textarea
+        name="job_description"
+        class="form-control"
+        rows="8"
+        placeholder="Paste the job description here..."></textarea>
+
+</div>
+
             <div class="d-grid">
 
                 <button
@@ -381,6 +395,74 @@
 
             {% endfor %}
 
+        </div>
+
+    </div>
+
+</div>
+
+{% endif %}
+
+{% if job_match %}
+
+<div class="card mb-4">
+
+    <div class="card-body">
+
+        <h3 class="card-title mb-4">
+            💼 Job Match Analysis
+        </h3>
+
+        <div class="mb-4">
+            <h5>📊 Match Score</h5>
+
+            <h2>
+                {{ job_match.match_score }}%
+            </h2>
+        </div>
+
+        <div class="mb-4">
+            <h5>✅ Matching Skills</h5>
+
+            {% for skill in job_match.matching_skills %}
+                <span class="skill-badge">
+                    {{ skill }}
+                </span>
+            {% endfor %}
+        </div>
+
+        <div class="mb-4">
+            <h5>⚠️ Missing Skills</h5>
+
+            {% for skill in job_match.missing_skills %}
+                <span class="skill-badge">
+                    {{ skill }}
+                </span>
+            {% endfor %}
+        </div>
+
+        <div class="mb-4">
+            <h5>🔑 Matching Keywords</h5>
+
+            <ul class="list-group">
+                {% for keyword in job_match.matching_keywords %}
+                    <li class="list-group-item">
+                        {{ keyword }}
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
+
+        <div>
+            <h5>💡 Recommendations</h5>
+
+            <ul class="list-group">
+                {% for recommendation in job_match.recommendations %}
+                    <li class="list-group-item">
+                        {{ recommendation }}
+                    </li>
+                {% endfor %}
+            </ul>
         </div>
 
     </div>

@@ -76,3 +76,65 @@ Rules:
             "suggestions": [],
             "important_skills": []
         }
+
+def analyze_job_match(resume_text, job_description):
+
+    prompt = f"""
+You are an AI job matching assistant.
+
+Compare the resume with the job description below.
+
+RESUME:
+{resume_text}
+
+JOB DESCRIPTION:
+{job_description}
+
+Return ONLY valid JSON.
+Do not use markdown.
+Do not use ```.
+
+Use exactly this structure:
+
+{{
+    "match_score": 0,
+    "matching_skills": [],
+    "missing_skills": [],
+    "matching_keywords": [],
+    "recommendations": []
+}}
+
+Rules:
+- match_score must be an integer from 0 to 100.
+- Only identify skills and keywords that are actually present.
+- Do not invent information about the candidate.
+- Keep recommendations concise.
+- Base the score on how well the resume matches the job requirements.
+"""
+
+    response = ollama.chat(
+        model=MODEL,
+        messages=[
+            {
+                "role": "user",
+                "content": prompt
+            }
+        ]
+    )
+
+    content = response["message"]["content"]
+
+    try:
+        return json.loads(content)
+
+    except json.JSONDecodeError:
+
+        return {
+            "match_score": 0,
+            "matching_skills": [],
+            "missing_skills": [],
+            "matching_keywords": [],
+            "recommendations": [
+                "AI response could not be parsed."
+            ]
+        }
