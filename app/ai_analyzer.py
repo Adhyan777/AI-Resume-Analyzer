@@ -1,3 +1,4 @@
+import json
 import ollama
 
 
@@ -9,28 +10,46 @@ def analyze_resume(resume_text):
     prompt = f"""
 You are a professional resume reviewer.
 
-Analyze the following resume and provide concise feedback.
+Analyze the resume below.
 
 Resume:
 {resume_text}
 
-Return your response with these sections:
+Return ONLY valid JSON.
+Do not use markdown.
+Do not use ```.
 
-1. Overall Impression
-2. Strengths
-3. Weaknesses
-4. Suggestions for Improvement
+Use exactly this structure:
 
-Focus on:
-- Resume structure
-- Skills
-- Projects
-- Experience
-- Education
-- Achievements
-- Professional language
+{{
+    "overall_impression": "A concise overall assessment.",
+    "strengths": [
+        "Strength 1",
+        "Strength 2",
+        "Strength 3"
+    ],
+    "weaknesses": [
+        "Weakness 1",
+        "Weakness 2",
+        "Weakness 3"
+    ],
+    "suggestions": [
+        "Suggestion 1",
+        "Suggestion 2",
+        "Suggestion 3"
+    ],
+    "important_skills": [
+        "Skill 1",
+        "Skill 2",
+        "Skill 3"
+    ]
+}}
 
-Do not invent information that is not present in the resume.
+Rules:
+- Only use information actually present in the resume.
+- Do not invent education, experience, certifications, achievements, or skills.
+- Keep each item concise.
+- If information is missing, say that it is missing instead of inventing it.
 """
 
     response = ollama.chat(
@@ -43,4 +62,17 @@ Do not invent information that is not present in the resume.
         ]
     )
 
-    return response["message"]["content"]
+    content = response["message"]["content"]
+
+    try:
+        return json.loads(content)
+
+    except json.JSONDecodeError:
+
+        return {
+            "overall_impression": content,
+            "strengths": [],
+            "weaknesses": [],
+            "suggestions": [],
+            "important_skills": []
+        }
