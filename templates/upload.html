@@ -495,6 +495,84 @@
 
 {% endif %}
 
+{% if keyword_match %}
+
+<div class="card mb-4">
+
+    <div class="card-body">
+
+        <h3 class="card-title mb-4">
+            🔑 Keyword Match
+        </h3>
+
+        <div class="mb-4">
+
+            <h5>Keyword Match Score</h5>
+
+            <div class="d-flex align-items-center gap-3">
+
+                <h2 class="mb-0">
+                    {{ keyword_match.score }}%
+                </h2>
+
+                <div
+                    class="progress flex-grow-1"
+                    style="height: 20px;">
+
+                    <div
+                        class="progress-bar"
+                        role="progressbar"
+                        style="width: {{ keyword_match.score }}%;"
+                        aria-valuenow="{{ keyword_match.score }}"
+                        aria-valuemin="0"
+                        aria-valuemax="100">
+
+                        {{ keyword_match.score }}%
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="mb-4">
+
+            <h5>🟢 Matching Keywords</h5>
+
+            {% for keyword in keyword_match.matching_keywords %}
+
+                <span class="skill-badge skill-match">
+                    {{ keyword }}
+                </span>
+
+            {% endfor %}
+
+        </div>
+
+
+        <div>
+
+            <h5>🔴 Missing Keywords</h5>
+
+            {% for keyword in keyword_match.missing_keywords %}
+
+                <span class="skill-badge skill-missing">
+                    {{ keyword }}
+                </span>
+
+            {% endfor %}
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endif %}
+
     <!-- Extracted Text -->
 
 <hr>

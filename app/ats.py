@@ -92,3 +92,79 @@ def calculate_ats_score(resume_summary, text):
         "strengths": strengths,
         "improvements": improvements
     }
+
+def calculate_keyword_match(resume_text, job_description):
+    """
+    Compare important keywords from the job description
+    against the resume text.
+    """
+
+    resume_text = resume_text.lower()
+    job_description = job_description.lower()
+
+    keywords = [
+        "python",
+        "flask",
+        "django",
+        "fastapi",
+        "sql",
+        "mysql",
+        "postgresql",
+        "mongodb",
+        "git",
+        "github",
+        "rest api",
+        "api",
+        "html",
+        "css",
+        "javascript",
+        "react",
+        "node.js",
+        "java",
+        "c++",
+        "machine learning",
+        "deep learning",
+        "artificial intelligence",
+        "data science",
+        "pandas",
+        "numpy",
+        "tensorflow",
+        "pytorch",
+        "docker",
+        "aws",
+        "azure",
+        "linux",
+    ]
+
+    required_keywords = []
+
+    for keyword in keywords:
+        if keyword in job_description:
+            required_keywords.append(keyword)
+
+    matching_keywords = []
+    missing_keywords = []
+
+    for keyword in required_keywords:
+
+        if keyword in resume_text:
+            matching_keywords.append(keyword)
+
+        else:
+            missing_keywords.append(keyword)
+
+    if required_keywords:
+
+        match_score = round(
+            (len(matching_keywords) / len(required_keywords)) * 100
+        )
+
+    else:
+
+        match_score = 0
+
+    return {
+        "score": match_score,
+        "matching_keywords": matching_keywords,
+        "missing_keywords": missing_keywords
+    }
