@@ -118,6 +118,17 @@
 
     <!-- ATS Score Placeholder -->
 
+{% if ats_result %}
+
+    {% set score_class = "score-poor" %}
+
+    {% if ats_result.score >= 80 %}
+        {% set score_class = "score-excellent" %}
+    {% elif ats_result.score >= 50 %}
+        {% set score_class = "score-good" %}
+    {% endif %}
+
+
     <div class="col-lg-4">
 
         <div class="card dashboard-card">
@@ -125,29 +136,90 @@
             <div class="card-body text-center">
 
                 <h3 class="card-title mb-4">
-    📊 ATS Score
-</h3>
+                    📊 ATS Score
+                </h3>
 
-<div class="score-number {{ score_class }}">
-    {{ ats_result.score }}/100
-</div>
 
-<p class="score-label mb-3">
-    Overall Resume Score
-</p>
+                <h1 class="{{ score_class }}">
+                    {{ ats_result.score }}%
+                </h1>
 
-<div class="progress" style="height:25px;">
 
-    <div
-        class="progress-bar {{ 'bg-success' if ats_result.score >= 80 else 'bg-warning' if ats_result.score >= 50 else 'bg-danger' }}"
-        role="progressbar"
-        style="width: {{ ats_result.score }}%;">
+                {% if ats_result.score >= 80 %}
 
-        {{ ats_result.score }}%
+                    <p class="text-success">
+                        Excellent resume
+                    </p>
 
-    </div>
+                {% elif ats_result.score >= 50 %}
 
-</div>
+                    <p class="text-warning">
+                        Good resume — room for improvement
+                    </p>
+
+                {% else %}
+
+                    <p class="text-danger">
+                        Needs improvement
+                    </p>
+
+                {% endif %}
+
+
+                <div class="progress mt-4 mb-4" style="height: 20px;">
+
+                    <div
+                        class="progress-bar {{ 'bg-success' if ats_result.score >= 80 else 'bg-warning' if ats_result.score >= 50 else 'bg-danger' }}"
+                        role="progressbar"
+                        style="width: {{ ats_result.score }}%;">
+
+                        {{ ats_result.score }}%
+
+                    </div>
+
+                </div>
+
+
+                {% if ats_result.strengths %}
+
+                    <h5 class="text-start mb-3">
+                        ✅ Strengths
+                    </h5>
+
+                    <ul class="list-group text-start mb-4">
+
+                        {% for strength in ats_result.strengths %}
+
+                            <li class="list-group-item">
+                                {{ strength }}
+                            </li>
+
+                        {% endfor %}
+
+                    </ul>
+
+                {% endif %}
+
+
+                {% if ats_result.improvements %}
+
+                    <h5 class="text-start mb-3">
+                        💡 Improvements
+                    </h5>
+
+                    <ul class="list-group text-start">
+
+                        {% for improvement in ats_result.improvements %}
+
+                            <li class="list-group-item">
+                                {{ improvement }}
+                            </li>
+
+                        {% endfor %}
+
+                    </ul>
+
+                {% endif %}
 
             </div>
 
@@ -155,21 +227,7 @@
 
     </div>
 
-</div>
-
 {% endif %}
-
-    <!-- ATS Score -->
-
-    {% set score_class = "score-poor" %}
-
-{% if ats_result.score >= 80 %}
-    {% set score_class = "score-excellent" %}
-{% elif ats_result.score >= 50 %}
-    {% set score_class = "score-good" %}
-{% endif %}
-
-    {% if ats_result %}
 
 {% if resume_summary %}
 
