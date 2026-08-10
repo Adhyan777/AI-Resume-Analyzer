@@ -621,6 +621,38 @@
                     </li>
                 {% endfor %}
             </ul>
+
+        {% if keyword_match and keyword_match.missing_keywords %}
+
+    <div class="mt-4">
+
+        <h5>🎯 Priority Improvements</h5>
+
+        <p class="text-muted">
+            These job-related keywords were found in the job description
+            but not detected in your resume.
+        </p>
+
+        <ul class="list-group">
+
+            {% for keyword in keyword_match.missing_keywords %}
+
+                <li class="list-group-item">
+                    <strong>{{ keyword }}</strong>
+                    <span class="text-muted">
+                        — Consider adding relevant experience or a project
+                        involving this skill if you genuinely have it.
+                    </span>
+                </li>
+
+            {% endfor %}
+
+        </ul>
+
+    </div>
+
+{% endif %}
+
         </div>
 
     </div>
