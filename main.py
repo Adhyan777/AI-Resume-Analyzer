@@ -49,6 +49,7 @@ def upload():
     ai_analysis = None
     job_match = None
     keyword_match = None
+    combined_match_score = None
 
     if request.method == "POST":
 
@@ -62,7 +63,11 @@ def upload():
                 "upload.html",
                 extracted_text=extracted_text,
                 resume_summary=resume_summary,
-                ats_result=ats_result
+                ats_result=ats_result,
+                ai_analysis=ai_analysis,
+                job_match=job_match,
+                keyword_match=keyword_match,
+                combined_match_score=combined_match_score
             )
 
         file = request.files["resume"]
@@ -75,7 +80,11 @@ def upload():
                 "upload.html",
                 extracted_text=extracted_text,
                 resume_summary=resume_summary,
-                ats_result=ats_result
+                ats_result=ats_result,
+                ai_analysis=ai_analysis,
+                job_match=job_match,
+                keyword_match=keyword_match,
+                combined_match_score=combined_match_score
             )
 
         if file and allowed_file(file.filename):
@@ -89,28 +98,13 @@ def upload():
 
             file.save(filepath)
 
+            # Extract resume text
             extracted_text = extract_text(filepath)
+
+            # AI resume analysis
             ai_analysis = analyze_resume(extracted_text)
 
-            job_match = None
-
-
-        if job_description.strip():
-
-            job_match = analyze_job_match(
-            extracted_text,
-            job_description
-     )
-
-        keyword_match = None
-
-        if job_description.strip():
-
-            keyword_match = calculate_keyword_match(
-            extracted_text,
-            job_description
-     )    
-
+            # Resume summary
             resume_summary = {
                 "name": extract_name(extracted_text),
                 "email": extract_email(extracted_text),
@@ -120,10 +114,34 @@ def upload():
                 "skills": detect_skills(extracted_text)
             }
 
+            # ATS score
             ats_result = calculate_ats_score(
                 resume_summary,
                 extracted_text
             )
+
+            # Job description analysis
+            if job_description.strip():
+
+                job_match = analyze_job_match(
+                    extracted_text,
+                    job_description
+                )
+
+                keyword_match = calculate_keyword_match(
+                    extracted_text,
+                    job_description
+                )
+
+                combined_match_score = round(
+                    (keyword_match["score"] * 0.60)
+                    + (job_match["match_score"] * 0.40)
+                )
+
+                combined_match_score = max(
+                    0,
+                    min(100, combined_match_score)
+                )
 
             flash(
                 "Resume uploaded successfully!",
@@ -138,14 +156,15 @@ def upload():
             )
 
     return render_template(
-    "upload.html",
-    extracted_text=extracted_text,
-    resume_summary=resume_summary,
-    ats_result=ats_result,
-    ai_analysis=ai_analysis,
-    job_match=job_match,
-    keyword_match=keyword_match
-)
+        "upload.html",
+        extracted_text=extracted_text,
+        resume_summary=resume_summary,
+        ats_result=ats_result,
+        ai_analysis=ai_analysis,
+        job_match=job_match,
+        keyword_match=keyword_match,
+        combined_match_score=combined_match_score
+    )
 
 @app.route("/about")
 def about():
