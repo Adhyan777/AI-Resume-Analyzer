@@ -653,6 +653,30 @@
 
 {% endif %}
 
+{% if keyword_match and keyword_match.improvement_priority %}
+
+    <div class="mt-4">
+
+        <h5>📝 Resume Improvement Checklist</h5>
+
+        <ul class="list-group">
+
+            {% for keyword in keyword_match.improvement_priority %}
+
+                <li class="list-group-item">
+                    🔴 <strong>{{ keyword }}</strong>
+                    — Highlight relevant experience, projects, or coursework
+                    involving this skill if you genuinely have it.
+                </li>
+
+            {% endfor %}
+
+        </ul>
+
+    </div>
+
+{% endif %}
+
         </div>
 
     </div>

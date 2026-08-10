@@ -166,5 +166,6 @@ def calculate_keyword_match(resume_text, job_description):
     return {
         "score": match_score,
         "matching_keywords": matching_keywords,
-        "missing_keywords": missing_keywords
+        "missing_keywords": missing_keywords,
+        "improvement_priority": missing_keywords
     }
